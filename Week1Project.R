@@ -23,8 +23,12 @@
 # load dependancies
 library(dplyr)
 
+temp <- tempfile()
+download.file("https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2Fhousehold_power_consumption.zip",temp, method = "curl")
+
 # Create the data_frame...
-power<-read.table("household_power_consumption.txt", header = TRUE, sep=";", stringsAsFactors = FALSE)
+power<-read.table(unz(temp, "household_power_consumption.txt"), header = TRUE, sep=";", stringsAsFactors = FALSE)
+unlink(temp)
 
 # only include what we need
 vals <- c("1/2/2007", "2/2/2007")
