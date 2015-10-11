@@ -23,10 +23,9 @@
 # load dependancies
 library(dplyr)
 
+# Download data file and create the data_frame...
 temp <- tempfile()
-download.file("https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2Fhousehold_power_consumption.zip",temp, method = "curl")
-
-# Create the data_frame...
+download.file("https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2Fhousehold_power_consumption.zip",temp, method = "curl", quiet = TRUE)
 power<-read.table(unz(temp, "household_power_consumption.txt"), header = TRUE, sep=";", stringsAsFactors = FALSE)
 unlink(temp)
 
@@ -47,21 +46,7 @@ power$Datetime <- strptime(power$Datetime, "%d/%m/%Y %H:%M:%S")
 power$Date <- strptime(power$Date, "%d/%m/%Y")
 
 # Plot 1 - Histogram
+png(filename="Plot1.png", height = 480, width = 480, units = "px")
 hist(power$Global_active_power, col = "red", xlab = "Global Active Power (kilowatts)", main = "Global Active Power")
-dev.copy(png, "Plot1.png")
-dev.off()
-
-# Plot 2 ...
-plot(power$Datetime, power$Global_active_power, pch = NA, xlab = NA, ylab = "Global Active Power (kilowatts)")
-lines(power$Datetime, power$Global_active_power)
-dev.copy(png, "Plot2.png")
-dev.off()
-
-# Plot 3 ...
-plot(power$Datetime, power$Sub_metering_1, type="n", pch = NA, xlab = NA, ylab = "Energy sub metering")
-lines(power$Datetime, power$Sub_metering_1)
-lines(power$Datetime, power$Sub_metering_2, col = "red")
-lines(power$Datetime, power$Sub_metering_3, col = "blue")
-
-dev.copy(png, "Plot3.png")
+#dev.copy(png, "Plot1.png")
 dev.off()
